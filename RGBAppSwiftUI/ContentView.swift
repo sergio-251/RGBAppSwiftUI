@@ -12,7 +12,7 @@ struct ContentView: View {
     @State private var greenValueColor = Double.random(in: 0...255)
     @State private var blueValueColor = Double.random(in: 0...255)
     
-    @FocusState private var currentTapTF: TextFieldColors?
+    @FocusState private var focusedTextField: Colors?
    
     var body: some View {
         ZStack {
@@ -25,67 +25,31 @@ struct ContentView: View {
                 )
                 VStack(spacing: 20) {
                     ColorGroupView(valueColor: $redValueColor, sliderColor: .red)
-                        .focused($currentTapTF, equals: .red)
+                        .focused($focusedTextField, equals: .red)
                     ColorGroupView(valueColor: $greenValueColor, sliderColor: .green)
-                        .focused($currentTapTF, equals: .green)
+                        .focused($focusedTextField, equals: .green)
                     ColorGroupView(valueColor: $blueValueColor, sliderColor: .blue)
-                        .focused($currentTapTF, equals: .blue)
+                        .focused($focusedTextField, equals: .blue)
                 }
                 .frame(height: 180)
                 .toolbar {
                     ToolbarItemGroup(placement: .keyboard) {
                         Spacer()
                         Button("Done") {
-                            currentTapTF = nil
+                            focusedTextField = nil
                         }
                     }
                 }
                 Spacer()
             }
             .padding()
-            
-        }
-        .onTapGesture {
-            currentTapTF = nil
         }
     }
 }
 
-//MARK: - Enum
 extension ContentView {
-    enum TextFieldColors {
-        case red
-        case green
-        case blue
-    }
-}
-
-//MARK: - Private Methods
-extension ContentView {
-    private func nextTextFiledTap() {
-        switch currentTapTF {
-        case .red:
-            currentTapTF = .green
-        case .green:
-            currentTapTF = .blue
-        case .blue:
-            currentTapTF = .red
-        case .none:
-            currentTapTF = nil
-        }
-    }
-    
-    private func prevTextFieldTap() {
-        switch currentTapTF {
-        case .red:
-            currentTapTF = .blue
-        case .green:
-            currentTapTF = .red
-        case .blue:
-            currentTapTF = .green
-        case .none:
-            currentTapTF = nil
-        }
+    enum Colors {
+        case red, green, blue
     }
 }
 
